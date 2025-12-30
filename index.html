@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pixel Flow Mosaic (Selfie → Stock)</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Pixel Flow Mosaic</h1>
+    <p class="sub">Static GitHub Pages app. Upload a selfie → rearrange pixels to match a stock image’s structure.</p>
+  </header>
+
+  <main class="grid">
+        <section class="card">
+      <h2>1) Input</h2>
+
+      <div class="row">
+        <label class="btn">
+          Upload selfie
+          <input id="selfieInput" type="file" accept="image/*" />
+        </label>
+      </div>
+
+      <div class="row small">
+        <span>Preview (square crop + resize happens on run)</span>
+      </div>
+
+      <div class="row preview single">
+        <div class="previewBlock">
+          <div class="label">Selfie preview</div>
+          <canvas id="selfiePreview" width="256" height="256"></canvas>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="card">
+      <h2>2) Settings</h2>
+
+      <div class="controls">
+        <label>Resolution (sidelen)
+          <select id="sidelen">
+            <option value="64">64 (fast)</option>
+            <option value="96" selected>96 (balanced)</option>
+            <option value="128">128 (slow)</option>
+          </select>
+        </label>
+
+        <label>Swap iterations (assignment)
+          <input id="iters" type="number" min="5000" max="2000000" step="5000" value="400000" />
+        </label>
+
+        <label>Proximity (movement penalty)
+          <input id="proximity" type="number" min="0" max="0.2" step="0.005" value="0.025" />
+        </label>
+
+        <label>Edge alpha (target importance)
+          <input id="edgeAlpha" type="number" min="0" max="10" step="0.5" value="4.0" />
+        </label>
+
+        <label>Frames (animation)
+          <input id="frames" type="number" min="1" max="240" step="1" value="120" />
+        </label>
+
+        <label>FPS (recording)
+          <input id="fps" type="number" min="5" max="60" step="1" value="30" />
+        </label>
+
+        <label>
+          <input id="anneal" type="checkbox" checked />
+          Simulated annealing
+        </label>
+      </div>
+
+      <div class="row">
+        <button id="runBtn" class="btn primary">▶ Play</button>
+        <button id="stopBtn" class="btn" disabled>Stop</button>
+        <button id="downloadPngBtn" class="btn" disabled>Download PNG</button>
+        <button id="recordBtn" class="btn" disabled>Record WebM</button>
+        <a id="downloadVideoLink" class="btn" style="display:none" download="mosaic.webm">Download WebM</a>
+      </div>
+
+      <div class="row small">
+        <progress id="progress" value="0" max="1"></progress>
+        <span id="status">Idle.</span>
+      </div>
+
+      <p class="hint">
+        Notes: The heavy part is the <b>assignment</b> (swap search). Start with <code>sidelen=64</code> and ~<code>20k–60k</code> iterations.
+        Everything runs locally in your browser (no server).
+      </p>
+    </section>
+
+    <section class="card wide">
+      <h3>3) Output</h3>
+      <canvas id="outCanvas" width="512" height="512"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made for GitHub Pages. Algorithm: Lab-based permutation + particle flow + JFA Voronoi rendering.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
